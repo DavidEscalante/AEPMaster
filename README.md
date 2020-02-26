@@ -1,7 +1,6 @@
 # APPLESCRIPT FOR AFTER EFFECTS
 
 This script requires you to have already installed:
-* [ffmpeg](https://www.ffmpeg.org/download.html)
 * [mediainfo](https://mediaarea.net/es/MediaInfo)
 * [iTerm](https://iterm2.com) 
 
