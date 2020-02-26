@@ -1,9 +1,9 @@
 # APPLESCRIPT FOR AFTER EFFECTS
 
 This script requires you to have already installed:
-[ffmpeg] (https://www.ffmpeg.org/download.html)
-[mediainfo] (https://mediaarea.net/es/MediaInfo)
-[iTerm] (https://iterm2.com) 
+* [ffmpeg](https://www.ffmpeg.org/download.html)
+* [mediainfo](https://mediaarea.net/es/MediaInfo)
+* [iTerm](https://iterm2.com) 
 
 This is an AppleScript that you can turn into an OSX app using the build-in Script Editor in OSX.
 
@@ -27,10 +27,10 @@ This script allows you to select an .aep (After Effects project) file. Once the 
 * The amount of instances you want to create.
 
 **Create**
-- A folder called "_OUTPUT" in the same location of the .aep file you chose, in this folder the instances will render the project as .psd sequences
-- An .aiff file, regardless if the project have or not audio, this is important.
-- FFMPEG: A .mov with ProRes 4444 configuration, it will merge the previously created .psd sequences.
-- FFMPEG: A .mp4 from the previous .mov file
+* A folder called "_OUTPUT" in the same location of the .aep file you chose, in this folder the instances will render the project as .psd sequences
+* An .aiff file, regardless if the project have or not audio, this is important.
+* FFMPEG: A .mov with ProRes 4444 configuration, it will merge the previously created .psd sequences.
+* FFMPEG: A .mp4 from the previous .mov file
 
 =========================
 
