@@ -1,4 +1,5 @@
 # APPLESCRIPT FOR AFTER EFFECTS
+see demo: https://youtu.be/q6TleS-IJ4s
 
 ![poster](https://p1.f0.n0.cdn.getcloudapp.com/items/xQuggL9z/Screen+Shot+2020-02-26+at+12.44.55+AM.png?v=3d13d0dbec8ea3734d5188bc88013e09)
 
