@@ -1,3 +1,5 @@
+# APPLESCRIPT FOR AFTER EFFECTS
+
 This is an AppleScript that you can turn into an OSX app using the build-in Script Editor in OSX.
 
 Because After Effects (at the time of writing this) only uses 1 core a frame, this makes rendering extremely slow, specially for computer with multiple cores CPUs.
@@ -11,15 +13,15 @@ If you have a 6 core CPU, you may want to pick 6 instances, meaning you should h
 
 =========================
 
-AEPMaster
+**AEPMaster**
 This script allows you to select an .aep (After Effects project) file. Once the file is selected the script will:
 
-Ask you
-- For the project frame rate, this is needed to create the .mp4 files
-- If you want to shutdown the computer once the creation of both .mp4 and .mov files are done
-- The amount of instances you want to create.
+**Ask you**
+* For the project frame rate, this is needed to create the .mp4 files
+* If you want to shutdown the computer once the creation of both .mp4 and .mov files are done
+* The amount of instances you want to create.
 
-Create:
+**Create**
 - A folder called "_OUTPUT" in the same location of the .aep file you chose, in this folder the instances will render the project as .psd sequences
 - An .aiff file, regardless if the project have or not audio, this is important.
 - FFMPEG: A .mov with ProRes 4444 configuration, it will merge the previously created .psd sequences.
@@ -31,4 +33,5 @@ Using mediainfo, the scrip will compare the .aiff file with the rendered .mov fi
 
 This is because, SOMETIMES, some After Effects instances might refuse to initiate, leaving ghost files behind, because these ghost files, the .mov might render incomplete or with the wrong duration, using the .aiff file with mediainfo, we can capture the duration of the whole project and then be sure if something is missing.
 
-If you have any questions, you can reach me here: zanate.com.mx/id
+If you have any questions, [you can reach me here](http://zanate.com.mx/id)
+
