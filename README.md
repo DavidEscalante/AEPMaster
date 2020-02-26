@@ -8,7 +8,7 @@ I wrote this script some couple of years ago for automating tasks, like creating
 
 It also creates multiple render instances of the same rendering process, forcing AE to use as many computer power as your system allows it, is a "brute force" approach, but you can get as 10 times faster render output than the default settings.
 
-Just beware that each process uses its own amount of ram, having 2 to 4 gigabytes of RAM for instance is recommended:
+**Just beware that each process uses its own amount of ram, having 2 to 4 gigabytes of RAM for instance is recommended:**
 If you have a 6 core CPU, you may want to pick 6 instances, meaning you should have around 24 gigabytes of ram available.
 
 =========================
@@ -17,8 +17,8 @@ If you have a 6 core CPU, you may want to pick 6 instances, meaning you should h
 This script allows you to select an .aep (After Effects project) file. Once the file is selected the script will:
 
 **Ask you**
-* For the project frame rate, this is needed to create the .mp4 files
-* If you want to shutdown the computer once the creation of both .mp4 and .mov files are done
+* For the project frame rate, this is needed to create the .mp4 files.
+* If you want to shutdown the computer once the creation of both .mp4 and .mov files are done.
 * The amount of instances you want to create.
 
 **Create**
