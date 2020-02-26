@@ -31,7 +31,7 @@ If you have a 6 core CPU, you may want to pick 6 instances, meaning you should h
 This script allows you to select an .aep (After Effects project) file. Once the file is selected the script will:
 
 **Ask you**
-* For the project frame rate, this is needed to create the .mp4 files.
+* For the project frame rate, this is needed to create the .mov and .mp4 files.
 * If you want to shutdown the computer once the creation of both .mp4 and .mov files are done.
 * The amount of instances you want to create.
 
