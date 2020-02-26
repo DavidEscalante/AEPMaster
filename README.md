@@ -9,13 +9,17 @@ This script requires you to have already installed:
 * [mediainfo](https://mediaarea.net/es/MediaInfo)
 * [iTerm](https://iterm2.com) 
 
-This is an AppleScript that you can turn into an OSX app using the build-in Script Editor in OSX.
-
 Because After Effects (at the time of writing this) only uses 1 core a frame, this makes rendering extremely slow, specially for computer with multiple cores CPUs.
 
 I wrote this script some couple of years ago for automating tasks, like creating multiple mp4 files with different soundtracks, and to upload each .mp4 to each client directory automatically, so I could let the script to render multiple projects and don't have to worry about anything else.
 
 It also creates multiple render instances of the same rendering process, forcing AE to use as many computer power as your system allows it, is a "brute force" approach, but you can get as 10 times faster render output than the default settings.
+
+You can also render multiple .aep files by running multiple instances of the AEPMaster app using this code in terminal:
+
+```
+open -n -a 'location-of-AEPtoMP4-MASTER.app'
+```
 
 **Just beware that each process uses its own amount of ram, having 2 to 4 gigabytes of RAM for instance is recommended:**
 If you have a 6 core CPU, you may want to pick 6 instances, meaning you should have around 24 gigabytes of ram available.
