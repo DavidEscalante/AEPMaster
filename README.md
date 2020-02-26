@@ -1,5 +1,10 @@
 # APPLESCRIPT FOR AFTER EFFECTS
 
+This script requires you to have already installed:
+* [ffmpeg] (https://www.ffmpeg.org/download.html)
+* [mediainfo] (https://mediaarea.net/es/MediaInfo)
+* [iTerm](https://iterm2.com/) 
+
 This is an AppleScript that you can turn into an OSX app using the build-in Script Editor in OSX.
 
 Because After Effects (at the time of writing this) only uses 1 core a frame, this makes rendering extremely slow, specially for computer with multiple cores CPUs.
