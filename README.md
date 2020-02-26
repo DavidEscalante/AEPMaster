@@ -1,9 +1,9 @@
 # APPLESCRIPT FOR AFTER EFFECTS
 
 This script requires you to have already installed:
-* [ffmpeg] (https://www.ffmpeg.org/download.html)
-* [mediainfo] (https://mediaarea.net/es/MediaInfo)
-* [iTerm] (https://iterm2.com) 
+[ffmpeg] (https://www.ffmpeg.org/download.html)
+[mediainfo] (https://mediaarea.net/es/MediaInfo)
+[iTerm] (https://iterm2.com) 
 
 This is an AppleScript that you can turn into an OSX app using the build-in Script Editor in OSX.
 
