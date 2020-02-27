@@ -6,8 +6,6 @@ see demo: https://youtu.be/q6TleS-IJ4s
 
 This script requires you to have already installed:
 * [After Effects](https://www.adobe.com/products/aftereffects.html)
-* [ffmpeg](https://www.ffmpeg.org/download.html) (in the same directory as the script)
-* [mediainfo](https://mediaarea.net/es/MediaInfo)
 * [iTerm](https://iterm2.com) 
 
 Because After Effects (at the time of writing this) only uses 1 core a frame, this makes rendering extremely slow, specially for computer with multiple cores CPUs.
