@@ -11,12 +11,12 @@ This script requires you to have already installed:
 I wrote this little app using the build in Script Editor in OSX.
 
 
-The app will ask you
+**The app will ask you**
 
 - The .aep file you want to render
 - The desire frames per second (this is needed for the .mov and .mp4 files)If you want to turn off the system after it finish
 
-La aplicación will create
+**The app will create**
 
 - 1 .mov, ProRes 4444
 - 1 .mp4, crf= 12
