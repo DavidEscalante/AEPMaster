@@ -49,14 +49,7 @@ There are 2 requierements at the moment that the app needs to work:
 
 Thats all, the app will take care of everything else
 
-# DOWNLOAD HERE
-
-DROPBOX
-
-https://www.dropbox.com/s/q270lzndip2xshp/AEP%20Master.7z?dl=1
-
-GITHUB
-https://github.com/DavidEscalante/AEPMaster
+# DOWNLOAD IT IN THE RELEASE TAB
 
 If you have any questions, [you can reach me here](http://zanate.com.mx/id)
 
