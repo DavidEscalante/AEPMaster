@@ -22,7 +22,7 @@ La aplicación will create
 - 1 .mp4, crf= 12
 - Multiple instances of the same render
 
-# This is the main reason I wrote this script in the first place
+# FORCING AFTER EFFECTS USING MULTIPLE CORES
 
 As you probably know, After Effects can be extremely slow to render, this is because it renders 1 frame at a time, limiting the amount of resources AE can access, this is the easiest (and free) way I found to force AE to use all CPU cores.
 
