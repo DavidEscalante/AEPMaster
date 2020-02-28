@@ -2,6 +2,8 @@ tell application "aep_master"
 	activate
 end tell
 
+tell application "System Events" to keystroke "c" using command down
+
 -- //////////////////////////////////////// ▼ IF YOU HAVE A DIFERENT AE VERSION, YOU MIGHT WANT TO CHANGE THIS ▼
 
 set AErenderengine to quoted form of POSIX path of "Applications:Adobe After Effects 2020:aerender"
@@ -77,23 +79,40 @@ tell application "System Events" to set RENDERfolder to POSIX path of container 
 -- //////////////////////////////////////// ▼ USER INPUT ▼
 set AEPfps to the text returned of (display dialog "OUTPUT FPS" default answer "24" with icon note buttons {"Cancel", "Continue"} default button "Continue")
 
-set ShutdownTriggerOptions to {yes, no}
-set SHUTDOWNtrigger to choose from list ShutdownTriggerOptions with prompt "Shutdown system after completion?" default items {no}
+set UserOptions to {yes, no}
+set SHUTDOWNtrigger to choose from list UserOptions with prompt "Shutdown system after completion?" default items {no}
 
-set aerender_clone to 0
-set NUMBERofinstances to 0
+set aerender_clone to 0 as number
+set USER_instances to 0 as number
+set USERcanContinue to no
 
-repeat until NUMBERofinstances is greater than 0
-	set NUMBERofinstances to the text returned of (display dialog "Render instances" default answer "1" with icon note buttons {"Cancel", "Continue"} default button "Continue")
-	if NUMBERofinstances is less than 1 then
-		display dialog "Atleast 1 instance must be selected" with icon note buttons {"sure, ok"} default button "sure, ok"
-	else if NUMBERofinstances is greater than 32 then
+repeat until USERcanContinue contains yes
+	repeat until USER_instances is greater than 0
+		set USER_instances to (the text returned of (display dialog "Render instances" default answer 1 with icon note buttons {"Cancel", "Continue"} default button "Continue")) as number
+		if USER_instances is less than 1 then
+			display dialog "Atleast 1 instance must be selected" with icon note buttons {"sure, ok"} default button "sure, ok"
+		else
+			-- skip
+		end if
+	end repeat
+	
+	if USER_instances is greater than 32 then
+		
 		display dialog "We recomend a maximum of 32, still want to continue?" with icon note buttons {"No", "Yes"} default button "No"
-		set NUMBERofinstances to 0
+		if button returned of result = "No" then
+			set USERcanContinue to no
+			set USER_instances to 0 as number
+		else
+			if button returned of result = "Yes" then
+				set USERcanContinue to yes
+			end if
+		end if
 	else
-		set aerender_clone to NUMBERofinstances
+		set USERcanContinue to yes
 	end if
 end repeat
+
+set aerender_clone to USER_instances
 
 set SAVEFINAL to POSIX path of (choose folder with prompt ¬
 	"Where do you want to save the .mp4 file?" default location strPath)
@@ -130,14 +149,12 @@ on error
 	beep 1
 	display notification (AEPname & ": aerendercore crashed")
 	try
-		tell application "iTerm"
-			
-			set S1 to create window with profile "Default"
-			tell current session of S1
-				set name to (AEPname & space & "RENDER AIFF")
-				write text P2renderAIFF
-				
-			end tell
+		tell application "Terminal"
+			activate
+			set aedebbugaiff to do script (P2renderAIFF & "; exit")
+			repeat while aedebbugaiff exists
+				delay 1
+			end repeat
 		end tell
 	on error
 		error number -128 -- user canceled
@@ -146,18 +163,25 @@ end try
 
 -- RENDER PSD's
 
+tell application "Terminal"
+	activate
+	do script P3renderPSD
+	tell application "Terminal" to set custom title of tab 1 of front window to ("Rendering:" & space & AEPname)
+end tell
+set aerender_clone to aerender_clone - 1
 -- ===============================================
 repeat until aerender_clone = 0
 	tell application "Terminal"
-		tell application "Terminal" to activate
-		tell application "System Events" to tell process "Terminal" to keystroke "t" using command down
+		activate
+		tell application "System Events" to keystroke "t" using command down
 		delay 0.5
 		do script P3renderPSD in selected tab of the front window
+		tell application "Terminal" to set custom title of tab 1 of front window to ("Rendering:" & space & AEPname)
 	end tell
 	set aerender_clone to aerender_clone - 1
 end repeat
 -- ===============================================
-set aerender_clone to NUMBERofinstances
+set aerender_clone to USER_instances
 
 try
 	do shell script P3renderPSD
@@ -189,18 +213,12 @@ repeat until VIDEOseconds ≥ AUDIOseconds -- LOOP UNTIL FILE IS CORRECT
 		do shell script P4renderMOV
 	on error
 		try
-			tell application "iTerm"
+			tell application "Terminal"
 				activate
-				set ffmpegdebbug to create window with profile "Default"
-				tell ffmpegdebbug
-					tell current session of ffmpegdebbug
-						set name to (AEPname & space & "RENDER MOV")
-						write text P4renderMOV
-					end tell
-					repeat while (exists ffmpegdebbug)
-						delay 1
-					end repeat
-				end tell
+				set ffmpegdebbug to do script P4renderMOV
+				repeat while ffmpegdebbug exists
+					delay 1
+				end repeat
 			end tell
 		on error
 			beep 1
@@ -233,20 +251,23 @@ repeat until VIDEOseconds ≥ AUDIOseconds -- LOOP UNTIL FILE IS CORRECT
 			
 			tell application "Terminal"
 				activate
-				reopen
+				do script P3renderPSD
+				tell application "Terminal" to set custom title of tab 1 of front window to ("Rendering:" & space & AEPname)
 			end tell
+			set aerender_clone to aerender_clone - 1
 			-- ===============================================
 			repeat until aerender_clone = 0
 				tell application "Terminal"
-					tell application "System Events"
-						keystroke "t" using {command down}
-					end tell
+					activate
+					tell application "System Events" to keystroke "t" using command down
+					delay 0.5
 					do script P3renderPSD in selected tab of the front window
+					tell application "Terminal" to set custom title of tab 1 of front window to ("Rendering:" & space & AEPname)
 				end tell
 				set aerender_clone to aerender_clone - 1
 			end repeat
 			-- ===============================================
-			set aerender_clone to NUMBERofinstances
+			set aerender_clone to USER_instances
 			
 			
 			do shell script P3renderPSD
@@ -268,18 +289,12 @@ try
 	do shell script P5MP4
 on error
 	try
-		tell application "iTerm"
+		tell application "Terminal"
 			activate
-			set ffmpegdebbugMP4 to create window with profile "Default"
-			tell ffmpegdebbugMP4
-				tell current session of ffmpegdebbugMP4
-					set name to (AEPname & space & "MP4, no sound")
-					write text P5MP4
-				end tell
-				repeat while (exists ffmpegdebbugMP4)
-					delay 1
-				end repeat
-			end tell
+			set ffmpegdebbugMP4 to do script P5MP4
+			repeat while ffmpegdebbugMP4 exists
+				delay 1
+			end repeat
 		end tell
 	on error
 		beep 1
@@ -294,18 +309,12 @@ try
 	do shell script P5MP4consonido
 on error
 	try
-		tell application "iTerm"
+		tell application "Terminal"
 			activate
-			set ffmpegdebbugSound to create window with profile "Default"
-			tell ffmpegdebbugSound
-				tell current session of ffmpegdebbugSound
-					set name to (AEPname & space & "MP4, merge with sound file")
-					write text P5MP4consonido
-				end tell
-				repeat while (exists ffmpegdebbugSound)
-					delay 1
-				end repeat
-			end tell
+			set ffmpegdebbugSound to do script P5MP4consonido
+			repeat while ffmpegdebbugSound exists
+				delay 1
+			end repeat
 		end tell
 	on error
 		beep 1
