@@ -6,8 +6,8 @@ See it in action: https://youtu.be/q6TleS-IJ4s
 
 This script requires you to have already installed:
 * [After Effects](https://www.adobe.com/products/aftereffects.html)
-I wrote this little app using the build in Script Editor in OSX.
 
+I wrote this little app using the build in Script Editor in OSX.
 
 
 The app will ask you
