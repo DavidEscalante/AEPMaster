@@ -49,7 +49,7 @@ There are 2 requierements at the moment that the app needs to work:
 
 Thats all, the app will take care of everything else
 
-# DOWNLOAD IT IN THE RELEASE TAB
+# DOWNLOAD IT IN THE RELEASES TAB
 
 If you have any questions, [you can reach me here](http://zanate.com.mx/id)
 
