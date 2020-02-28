@@ -1,42 +1,62 @@
 # APPLESCRIPT FOR AFTER EFFECTS
-see demo: https://youtu.be/q6TleS-IJ4s
+See it in action: https://youtu.be/q6TleS-IJ4s
 
 ![poster](https://p1.f0.n0.cdn.getcloudapp.com/items/KouWqRzo/Screen+Shot+2020-02-27+at+12.40.01+PM.png?v=4a09f05351f3a0c8624d7ccf9add9ba5)
 
 
 This script requires you to have already installed:
 * [After Effects](https://www.adobe.com/products/aftereffects.html)
+I wrote this little app using the build in Script Editor in OSX.
 
-Because After Effects (at the time of writing this) only uses 1 core a frame, this makes rendering extremely slow, specially for computer with multiple cores CPUs.
 
-I wrote this script some couple of years ago for automating tasks, like creating multiple mp4 files with different soundtracks, and to upload each .mp4 to each client directory automatically, so I could let the script to render multiple projects and don't have to worry about anything else.
 
-It also creates multiple render instances of the same rendering process, forcing AE to use as many computer power as your system allows it, is a "brute force" approach, but you can get as 10 times faster render output than the default settings.
+The app will ask you
 
-**Just beware that each process uses its own amount of ram, having 2 to 4 gigabytes of RAM for instance is recommended:**
-If you have a 6 core CPU, you may want to pick 6 instances, meaning you should have around 24 gigabytes of ram available.
+- The .aep file you want to render
+- The desire frames per second (this is needed for the .mov and .mp4 files)If you want to turn off the system after it finish
 
-=========================
+La aplicación will create
 
-**AEPMaster**
-This script allows you to select an .aep (After Effects project) file. Once the file is selected the script will:
+- 1 .mov, ProRes 4444
+- 1 .mp4, crf= 12
+- Multiple instances of the same render
 
-**Ask you**
-* For the project frame rate, this is needed to create the .mov and .mp4 files.
-* If you want to shutdown the computer once the creation of both .mp4 and .mov files are done.
-* The amount of instances you want to create.
+# This is the main reason I wrote this script in the first place
 
-**Create**
-* A folder called "_OUTPUT" in the same location of the .aep file you chose, in this folder the instances will render the project as .psd sequences
-* An .aiff file, regardless if the project have or not audio, this is important.
-* FFMPEG: A .mov with ProRes 4444 configuration, it will merge the previously created .psd sequences.
-* FFMPEG: A .mp4 from the previous .mov file
+As you probably know, After Effects can be extremely slow to render, this is because it renders 1 frame at a time, limiting the amount of resources AE can access, this is the easiset (and free) way I found to force AE to use all CPU cores.
 
-=========================
+These "instances" are doppelgängers of the render, this way we can output miltiple frames in parallel, decreasing the rendering time up to 10 or 20 times (depending on your hardware).
 
-Using mediainfo, the scrip will compare the .aiff file with the rendered .mov file, if both files time match, it means the video is rendered correctly, if there is a difference between these two, the render will restart and will keep going until these two files match exactly.
+For each instance you can reduce around 15% your render time (tested with a I7 6950X hackintosh system)
 
-This is because, SOMETIMES, some After Effects instances might refuse to initiate, leaving ghost files behind, because these ghost files, the .mov might render incomplete or with the wrong duration, using the .aiff file with mediainfo, we can capture the duration of the whole project and then be sure if something is missing.
+Example: If you render from AE takes 10 minutes, choosing:
+
+- 2 instances (30%), should reduce your render to 7 minutes
+- 4 instances (60%) shoud output your render in 4 minutes
+- 6 instances (90%) should output your render in less than 1 minute
+- and so on...
+
+And you are saving even more time since the app takes care for creating both .mov and .mp4, so usually you should add to those 10 minutes AE the time it takes to open other apps and render your files to these formats,  and you dont even have to start After Effects.
+
+Just beware that each instance might take around 2 or 4GB of RAM, so for a 12 core CPU, ideeally you might want 24 or 32GB of RAM, still, you can pick as many instances you want depending on your current hardware.
+
+# APP Requirements
+
+There are 2 requierements at the moment that the app needs to work:
+
+- The app need access to the accesibility features in OSX. This is needed so the app can send ⌘T shortcuts to the Terminal window so it can create multiple tabs, each one for each instance the user chooses to create.
+- You .aep file must share the name of the composition you want to render: If the comp you want to render is called "finalmaster1080" your .aep file **must** be called "finalmaster.aep"
+
+Thats all, the app will take care of everything else
+
+# DOWNLOAD HERE
+
+DROPBOX
+
+https://www.dropbox.com/s/q270lzndip2xshp/AEP%20Master.7z?dl=1
+
+GITHUB
+https://github.com/DavidEscalante/AEPMaster
 
 If you have any questions, [you can reach me here](http://zanate.com.mx/id)
 
