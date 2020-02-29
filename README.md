@@ -44,7 +44,7 @@ Just beware that each instance might take around 2 or 4GB of RAM, so for a 12 co
 
 # APP Requirements
 
-There are 2 requirements at the moment that the app need to work:
+There are 2 requirements at the moment that the app needs:
 
 - The app **needs access to the accessibility** features in OSX. This is needed so the app can send ⌘T shortcuts to the Terminal window so it can create multiple tabs, each one for each instance the user chooses to create.
 - **You .aep file must share the name of the composition you want to render:** If the comp you want to render is called "finalmaster1080" your .aep file **must** be called "finalmaster.aep"
