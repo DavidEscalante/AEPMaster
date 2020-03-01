@@ -4,11 +4,11 @@ set AErenderengine to quoted form of POSIX path of "Applications:Adobe After Eff
 
 -- //////////////////////////////////////// ▲ IF YOU HAVE A DIFERENT AE VERSION, YOU MIGHT WANT TO CHANGE THIS ▲
 
-
+set LOADdesktop to POSIX path of (path to desktop as text)
 tell application "System Events" to set myAPPpath to POSIX path of (path to me)
 
 -- CHECK IF TERMINAL HAVE ACCESSIBILITY PRIVILEGES 
-set createdummytext to ("touch" & space & quoted form of (myAPPpath & "/Contents/Resources/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & ";" & space & "exit")
+set createdummytext to ("touch" & space & quoted form of (LOADdesktop & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & ";" & space & "exit")
 
 tell application "Terminal"
 	activate
@@ -23,7 +23,7 @@ end tell
 
 set checktextfile to do shell script "
 #!/bin/bash
-if [ -e" & space & quoted form of (myAPPpath & "/Contents/Resources/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & space & "]
+if [ -e" & space & quoted form of (LOADdesktop & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & space & "]
 then
     echo \"yes\"
 else
@@ -32,7 +32,7 @@ fi
 "
 delay 0.5
 if (checktextfile contains yes) then
-	do shell script "/bin/rm " & quoted form of (myAPPpath & "/Contents/Resources/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt")
+	do shell script "/bin/rm " & quoted form of (LOADdesktop & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt")
 	tell application "Terminal"
 		do script "exit" in selected tab of the front window
 	end tell
@@ -100,7 +100,6 @@ else
 end if
 
 --------------------------------------------------------------------------------------------
-set LOADdesktop to POSIX path of (path to desktop as text)
 set strPath to POSIX file LOADdesktop
 set AEPfile to choose file with prompt "Choose an .aep file" of type {"AEP"} ¬
 	default location strPath
