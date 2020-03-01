@@ -1,14 +1,52 @@
-tell application "aep_master"
-	activate
-end tell
-
 -- //////////////////////////////////////// ▼ IF YOU HAVE A DIFERENT AE VERSION, YOU MIGHT WANT TO CHANGE THIS ▼
 
 set AErenderengine to quoted form of POSIX path of "Applications:Adobe After Effects 2020:aerender"
 
 -- //////////////////////////////////////// ▲ IF YOU HAVE A DIFERENT AE VERSION, YOU MIGHT WANT TO CHANGE THIS ▲
 
+
 tell application "System Events" to set myAPPpath to POSIX path of (path to me)
+
+-- CHECK IF TERMINAL HAVE ACCESSIBILITY PRIVILEGES 
+set createdummytext to ("touch" & space & quoted form of (myAPPpath & "/Contents/Resources/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & ";" & space & "exit")
+
+tell application "Terminal"
+	activate
+	reopen
+	delay 0.5
+	set checkAccesibility to do script "osascript -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"n\" using command down'" & space & "&&" & space & createdummytext
+	delay 0.5
+	do script "exit" in selected tab of the front window
+end tell
+
+-- CHECK IF THE TEXT FILE MADE BY TERMINAL EXISTS
+
+set checktextfile to do shell script "
+#!/bin/bash
+if [ -e" & space & quoted form of (myAPPpath & "/Contents/Resources/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & space & "]
+then
+    echo \"yes\"
+else
+    echo \"no\"
+fi
+"
+delay 0.5
+if (checktextfile contains yes) then
+	do shell script "/bin/rm " & quoted form of (myAPPpath & "/Contents/Resources/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt")
+	tell application "Terminal"
+		do script "exit" in selected tab of the front window
+	end tell
+else
+	tell application "aep_master"
+		activate
+		display dialog "Grant permission to Terminal to Accesibility: See video" as text with icon stop buttons {"OK"} default button "OK"
+	end tell
+	error number -128 -- user canceled
+end if
+
+tell application "aep_master"
+	activate
+end tell
 
 -- CHECK IF AFTER EFFECTS IS MISSING
 set ffmpegexists to do shell script "
