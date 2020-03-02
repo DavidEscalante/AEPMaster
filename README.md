@@ -44,10 +44,11 @@ Just beware that each instance might take around 2 or 4GB of RAM, so for a 12 co
 
 # APP Requirements (since v1.4)
 
-There only requirement at the moment the app needs is to enable Terminal in Accesibility:
-- The app no longer needs access to the accessibility features, **BUT**, Terminal does. This is good news because you are giving access to these features to an OSX app instead of the one I made and **you only need to do it once**, ever, before this you were required to give access to my app each time you download a newer version.
+There only requirement at the moment the app needs is to **enable Terminal in Accessibility**
 
-Thats all, the app will take care of everything else
+- The app no longer needs access to the accessibility features, **BUT**, Terminal does. This is good news because you are giving access to these features to an OSX app instead of the one I made and **you only need to do it once**, ever. There is a video included that shows how to do this.
+
+Thats all, the app will take care of everything else.
 
 **NOTE:** The included demo is made for 60fps, failing to input the correct fps for any .aep file, will result in the app endlessly trying to fix the render output, if this happen, **you will have to force quit the app.** (Right click on the dock icon + ⎇)
 
