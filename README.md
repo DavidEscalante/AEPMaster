@@ -10,8 +10,6 @@ This script requires you to have already installed:
 
 I wrote this little app using the build in Script Editor in OSX.
 
-See it in action: https://youtu.be/q6TleS-IJ4s
-
 **The app will ask you**
 
 - The .aep file you want to render
