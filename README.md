@@ -12,15 +12,16 @@ I wrote this little app using the build in Script Editor in OSX.
 
 **The app will ask you**
 
-- The .aep file you want to render
+- The location of the **aerender** file, this is located right in your After Effects folder. The app will ask you only once when you launch the app for the first time or if the aerender file have been deleted (usually after the installation of a newer version of After Effects)
+- The .aep file you want to render (you can render multiple .aep by launch the app multiple times)
 - The desire frames per second (this is needed for the .mov and .mp4 files)
 - If you want to turn off the system after it finish
 
 **The app will create**
 
-- 1 .mov, ProRes 4444
-- 1 .mp4, crf= 12
-- Multiple instances of the same render
+- 1 .mov, ProRes 4444 (in the same location of your .aep file)
+- 1 .mp4, crf= 12 (1 without sound in the location of your .aep file and other with sound in any location you choose)
+- Multiple instances of the same render (using OSX Terminal)
 
 # This is the main reason I wrote this script in the first place
 
