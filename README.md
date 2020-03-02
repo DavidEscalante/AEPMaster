@@ -44,15 +44,8 @@ Just beware that each instance might take around 2 or 4GB of RAM, so for a 12 co
 
 # APP Requirements (since v1.4)
 
-There are 2 requirements at the moment that the app need to work:
-
-
-
-- ~~The app **needs access to the accessibility** features in OSX. This is needed so the app can send ⌘T shortcuts to the Terminal window so it can create multiple tabs, each one for each instance the user chooses to create.~~
+There only requirement at the moment the app needs is to enable Terminal in Accesibility:
 - The app no longer needs access to the accessibility features, **BUT**, Terminal does. This is good news because you are giving access to these features to an OSX app instead of the one I made and **you only need to do it once**, ever, before this you were required to give access to my app each time you download a newer version.
-
-- ~~*You .aep file must share the name of the composition you want to render:** If the comp you want to render is called "finalmaster1080" your .aep file **must** be called "finalmaster.aep"~~
-- Yes, **you no longer need the .aep file to match the name of the composition you want to render,** still, it would make things faster so it stays as the default name the app will look, but now **it allows you to input any composition name and it will look for it.** If a comp with that name doesn't exist, the app will quit.
 
 Thats all, the app will take care of everything else
 
