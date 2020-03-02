@@ -1,41 +1,96 @@
--- //////////////////////////////////////// ▼ IF YOU HAVE A DIFERENT AE VERSION, YOU MIGHT WANT TO CHANGE THIS ▼
-
-set AErenderengine to quoted form of POSIX path of "Applications:Adobe After Effects 2020:aerender"
-
--- //////////////////////////////////////// ▲ IF YOU HAVE A DIFERENT AE VERSION, YOU MIGHT WANT TO CHANGE THIS ▲
-
 set LOADdesktop to POSIX path of (path to desktop as text)
 tell application "System Events" to set myAPPpath to POSIX path of (path to me)
+do shell script "mkdir -p" & space & (quoted form of (POSIX path of (path to home folder) & "AEPMASTER"))
 
--- CHECK IF TERMINAL HAVE ACCESSIBILITY PRIVILEGES 
-set createdummytext to ("touch" & space & quoted form of (LOADdesktop & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & ";" & space & "exit")
+set USERcanContinue to no
 
-tell application "Terminal"
-	activate
-	reopen
-	delay 0.5
-	set checkAccesibility to do script "osascript -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"n\" using command down'" & space & "&&" & space & createdummytext
-	delay 0.5
-	do script "exit" in selected tab of the front window
-end tell
-
--- CHECK IF THE TEXT FILE MADE BY TERMINAL EXISTS
-
-set checktextfile to do shell script "
+repeat until USERcanContinue contains yes
+	
+	-- CHECK IF THE //// AERENDER LOCATION //// TEXT FILE EXSITS
+	set checktextfile to do shell script "
 #!/bin/bash
-if [ -e" & space & quoted form of (LOADdesktop & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & space & "]
+if [ -e" & space & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "aerender_location.txt") & space & "]
 then
     echo \"yes\"
 else
     echo \"no\"
 fi
 "
-delay 0.5
+	delay 0.5
+	if (checktextfile contains yes) then
+		-- skip
+	else
+		display dialog "Please, locate and choose the aerender file in your After Effects folder" as text with icon caution buttons {"OK"} default button "OK"
+		
+		-- https://apple.stackexchange.com/questions/342773/can-applescript-get-folder-contents-with-file-extension-exclusion
+		set apps_ to path to "apps"
+		set AElocation to POSIX path of (choose file with prompt ¬
+			"Please, locate and choose the aerender file in your After Effects folder" default location apps_)
+		
+		-- https://forums.macrumors.com/threads/simple-applescript-create-a-txt-file.446171/
+		do shell script "echo" & space & quoted form of (AElocation) & space & ">" & space & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "aerender_location.txt")
+	end if
+	
+	set AErenderengine to do shell script "sed -n '1p'" & space & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "aerender_location.txt")
+	
+	-- CHECK IF AERENDER IS MISSING
+	set AEegexists to do shell script "
+if [ -e" & space & quoted form of AErenderengine & space & "]
+then
+    echo \"yes\"
+else
+    echo \"no\"
+fi
+"
+	if (AEegexists contains yes) then
+		set USERcanContinue to yes
+	else
+		display dialog "ERROR: couldnt find" & space & quoted form of AErenderengine as text with icon note buttons {"continue"}
+		do shell script "/bin/rm " & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "aerender_location.txt")
+	end if
+end repeat
+
+-- ==========================================================. CHECK IF TERMINAL HAVE ACCESSIBILITY PRIVILEGES 
+set createdummytext to ("touch" & space & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & ";" & space & "exit")
+
+set checktextfile to do shell script "
+#!/bin/bash
+if [ -e" & space & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & space & "]
+then
+    echo \"yes\"
+else
+    echo \"no\"
+fi
+"
+
 if (checktextfile contains yes) then
-	do shell script "/bin/rm " & quoted form of (LOADdesktop & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt")
+	-- skip
+else
 	tell application "Terminal"
+		activate
+		reopen
+		delay 0.5
 		do script "exit" in selected tab of the front window
+		set checkAccesibility to do script "osascript -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"n\" using command down'" & space & "&&" & space & createdummytext
+		delay 0.5
+		--do script "exit" in selected tab of the front window
 	end tell
+end if
+
+
+-- CHECK IF THE TEXT FILE MADE BY TERMINAL EXISTS
+
+set checktextfile to do shell script "
+#!/bin/bash
+if [ -e" & space & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt") & space & "]
+then
+    echo \"yes\"
+else
+    echo \"no\"
+fi
+"
+if (checktextfile contains yes) then
+	do shell script "echo" & space & "This is created by AEP Master, dont delete it" & space & ">" & space & quoted form of (POSIX path of (path to home folder) & "AEPMASTER" & "/" & "8CxsDP3m3XH8kuyrMhPocUGwboZbJd4.txt")
 else
 	tell application "aep_master"
 		activate
@@ -43,27 +98,11 @@ else
 	end tell
 	error number -128 -- user canceled
 end if
+-- ==========================================================. CHECK IF TERMINAL HAVE ACCESSIBILITY PRIVILEGES 
 
 tell application "aep_master"
 	activate
 end tell
-
--- CHECK IF AFTER EFFECTS IS MISSING
-set ffmpegexists to do shell script "
-#!/bin/bash
-if [ -e" & space & AErenderengine & space & "]
-then
-    echo \"yes\"
-else
-    echo \"no\"
-fi
-"
-if (ffmpegexists contains yes) then
-	-- continue
-else
-	display dialog "ERROR: couldnt find After Effects CC 2020, you might need to change the code" as text with icon note buttons {"=("}
-	error number -128 -- user canceled
-end if
 
 -- CHECK IF FFMPEG IS MISSING
 set ffmpegexists to do shell script "
@@ -83,7 +122,7 @@ else
 end if
 
 -- CHECK IF MEDIAINFO IS MISSING
-set ffmpegexists to do shell script "
+set mediainfoexists to do shell script "
 #!/bin/bash
 if [ -e" & space & quoted form of (myAPPpath & "/Contents/Resources/mediainfo") & space & "]
 then
@@ -92,7 +131,7 @@ else
     echo \"no\"
 fi
 "
-if (ffmpegexists contains yes) then
+if (mediainfoexists contains yes) then
 	-- continue
 else
 	display dialog "ERROR: mediainfo file is missing" as text with icon note buttons {"=("}
@@ -116,7 +155,7 @@ set CompName to the text returned of (display dialog "Name of the comp to render
 set AEPfps to the text returned of (display dialog "OUTPUT FPS" default answer "24" with icon note buttons {"Cancel", "Continue"} default button "Continue")
 
 set UserOptions to {yes, no}
-set instancesmaxlimit to 20 as number
+set instancesmaxlimit to 12 as number
 set aerender_clone to 0 as number
 set USER_instances to 0 as number
 set USERcanContinue to no
@@ -125,7 +164,7 @@ repeat until USERcanContinue contains yes
 	repeat until USER_instances is greater than 0
 		set USER_instances to (the text returned of (display dialog "Render instances" default answer 1 with icon note buttons {"Cancel", "Continue"} default button "Continue")) as number
 		if USER_instances is less than 1 then
-			display dialog "Atleast 1 instance must be selected" with icon note buttons {"sure, ok"} default button "sure, ok"
+			display dialog "Atleast 1 instance must be selected" with icon stop buttons {"sure, ok"} default button "sure, ok"
 		else
 			-- skip
 		end if
@@ -133,7 +172,7 @@ repeat until USERcanContinue contains yes
 	
 	if USER_instances is greater than instancesmaxlimit then
 		
-		display dialog "We recomend a maximum of" & space & instancesmaxlimit & ", still want to continue?" with icon note buttons {"No, go back", "Yes, my computer can handle anything"} default button "No, go back"
+		display dialog "We recomend a maximum of" & space & instancesmaxlimit & ", still want to continue?" with icon stop buttons {"No, go back", "Yes, my computer can handle anything"} default button "No, go back"
 		if button returned of result = "No, go back" then
 			set USERcanContinue to no
 			set USER_instances to 0 as number
@@ -161,8 +200,8 @@ set SHUTDOWNtrigger to choose from list UserOptions with prompt "Shutdown system
 set P1carpetaRENDER to ("mkdir -p " & "'" & RENDERfolder & "/" & "_OUTPUT" & "_" & CompName & "'")
 
 -- AERENDER
-set P2renderAIFF to (AErenderengine & space & "-project" & space & inputFilePath & space & "-comp" & space & quoted form of CompName & space & "-RStemplate 'Best Settings' -OMtemplate 'AIFF 48kHz' -output" & space & quoted form of (RENDERfolder & "/" & "_OUTPUT" & "_" & CompName & "/audio.aif") & "; exit")
-set P3renderPSD to (AErenderengine & space & "-project" & space & inputFilePath & space & "-comp" & space & quoted form of CompName & space & "-RStemplate 'Multi-Machine Settings' -OMtemplate 'Multi-Machine Sequence' -output" & space & quoted form of (RENDERfolder & "/" & "_OUTPUT" & "_" & CompName & "/[#####].psd") & space & "&& sleep 5s; exit")
+set P2renderAIFF to ((quoted form of AErenderengine) & space & "-project" & space & inputFilePath & space & "-comp" & space & quoted form of CompName & space & "-RStemplate 'Best Settings' -OMtemplate 'AIFF 48kHz' -output" & space & quoted form of (RENDERfolder & "/" & "_OUTPUT" & "_" & CompName & "/audio.aif") & "; exit")
+set P3renderPSD to ((quoted form of AErenderengine) & space & "-project" & space & inputFilePath & space & "-comp" & space & quoted form of CompName & space & "-RStemplate 'Multi-Machine Settings' -OMtemplate 'Multi-Machine Sequence' -output" & space & quoted form of (RENDERfolder & "/" & "_OUTPUT" & "_" & CompName & "/[#####].psd") & space & "&& sleep 5s; exit")
 
 -- FMPEG
 set P4renderMOV to (quoted form of (myAPPpath & "/Contents/Resources/ffmpeg") & space & "-f image2 -r" & space & AEPfps & space & "-i" & space & "'" & RENDERfolder & "/" & "_OUTPUT" & "_" & CompName & "/%05d.psd" & "'" & space & "-i" & space & "'" & RENDERfolder & "/" & "_OUTPUT" & "_" & CompName & "/audio.aif" & "'" & space & "-shortest -c:v prores_ks -profile:v 3 -r" & space & AEPfps & space & "'" & RENDERfolder & "/" & CompName & ".mov" & "'" & space & "-y" & "&& sleep 5s; exit")
@@ -209,9 +248,11 @@ end tell
 set aerender_clone to aerender_clone - 1
 *)
 
+delay 1
+
 tell application "Terminal"
 	activate
-	reopen
+	do script " "
 end tell
 -- ===============================================
 repeat until aerender_clone = 0
@@ -378,10 +419,34 @@ end try
 
 -- ///////// SHUTDOWN COMPUTER IF...
 if (SHUTDOWNtrigger contains no) then
-	-- do nothing
+	beep
+	tell application "aep_master"
+		activate
+	end tell
+	display dialog "All renders are completed" with icon note buttons {"Reveal in Finder", "Close"} default button "Close"
+	if button returned of result = "Reveal in Finder" then
+		-- https://apple.stackexchange.com/a/26536
+		set revealinfinder to POSIX file (SAVEFINAL & "/" & CompName & ".mp4")
+		tell application "Finder" to reveal revealinfinder
+	else
+		if button returned of result = "Close" then
+			error number -128 -- user canceled
+		end if
+	end if
 else
-	display notification ("shuting down in 30 seconds, CLOSE App to abort...")
-	delay 30
+	beep
+	tell application "aep_master"
+		activate
+	end tell
+	set timerseconds to 30 as number
+	set progress total steps to timerseconds
+	repeat until progress completed steps = 30
+		set progress description to "System will shutdown" & space & timerseconds
+		set progress additional description to "Press stop to cancel the shutdown."
+		set timerseconds to timerseconds - 1
+		set progress completed steps to progress completed steps + 1
+		delay 1
+	end repeat
 	do shell script "osascript -e 'tell app \"System Events\" to shut down'"
 end if
 -- //////////////////////////////////////// ▲ THE NERDY STUFF ▲
