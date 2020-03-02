@@ -42,7 +42,7 @@ And you are saving even more time since the app takes care for creating both .mo
 
 Just beware that each instance might take around 2 or 4GB of RAM, so for a 12 core CPU, ideally you might want 24 or 32GB of RAM, still, you can pick as many instances you want depending on your current hardware.
 
-# APP Requirements (v1.4)
+# APP Requirements (since v1.4)
 
 There are 2 requirements at the moment that the app need to work:
 
