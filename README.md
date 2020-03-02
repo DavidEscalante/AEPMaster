@@ -59,5 +59,5 @@ Thats all, the app will take care of everything else
 
 # DOWNLOAD IT ON THE RELEASES TAB
 
-Questions or ideas, reache me here: http://zanate.com.mx/id/
+Questions or ideas, reach me here: http://zanate.com.mx/id/
 
