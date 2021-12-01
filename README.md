@@ -1,3 +1,5 @@
+# DO NOT USE IF YOU ARE ON BIG SUR, OSX DO NOT ALLOW IT TO RUN
+
 # APPLESCRIPT FOR AFTER EFFECTS
 See it in action: https://youtu.be/q6TleS-IJ4s
 
